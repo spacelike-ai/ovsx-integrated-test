@@ -20,9 +20,15 @@ Image pushen:
 podman push "<image_registry>/<image_org>/pluginregistry-rhel8:<image_tag>"
 ```
 
-Image ausführen:
-```sh
-podman run --rm -ti -p 8080:8080 -e START_OPENVSX=true <image_registry>/<image_org>/pluginregistry-rhel8:<image_tag>
+Die `CheCluster` resource anpassen:
+```yaml
+spec:
+  components:
+    pluginRegistry:
+      deployment:
+        containers:
+          - image: <image_registry>/<image_org>/pluginregistry-rhel8:<image_tag>
+      openVSXURL: ''
 ```
 
 ## Troubleshooting
