@@ -19,7 +19,7 @@ originial_extension_file="$tempdir/orig.json"
 additional_extension_file="additional-extensions.json"
 
 mv "$extension_file" "$originial_extension_file"
-jq -s '.[0] + .[1]' "$originial_extension_file" "$additional_extension_file" >"$extension_file"
+jq -s '.[0] + .[1]' "$additional_extension_file" "$originial_extension_file" >"$extension_file"
 
 (
     # Suppress following question from `npx`: Need to install the following packages: [..] Ok to proceed?
