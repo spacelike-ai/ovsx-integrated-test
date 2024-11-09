@@ -1,0 +1,80 @@
+# https://www.redhat.com/en/blog/podman-inside-container
+# requires: tkn hub install task git-clone
+
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: ovsx-build
+spec:
+  params:
+    - name: source_repo
+    - name: builder_image
+      default: redhat/ubi9
+    - name: devspaces_version
+    - name: output_registry
+    - name: output_image_namespace
+    - name: output_image_tag
+    - name: upstream_registry_user
+    - name: upstream_registry_password
+  workspaces:
+    - name: source
+  tasks:
+    - name: clone-source
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source
+      params:
+        - name: url
+          value: $(params.source_repo)
+    - name: build
+      taskRef:
+        name: ovsx-build
+      workspaces:
+        - name: source
+      params:
+        - name: devspaces_version
+          value: $(params.devspaces_version)
+        - name: output_registry
+          value: $(params.output_registry)
+        - name: output_image_namespace
+          value: $(params.output_image_namespace)
+        - name: output_image_tag
+          value: $(params.output_image_tag)
+        - name: upstream_registry_user
+          value: $(params.upstream_registry_user)
+        - name: upstream_registry_password
+          value: $(params.upstream_registry_password)
+      runAfter:
+        - clone-source
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ovsx-build
+spec:
+  params:
+    - name: builder_image
+      default: redhat/ubi9
+    - name: devspaces_version
+    - name: output_registry
+    - name: output_image_namespace
+    - name: output_image_tag
+    - name: upstream_registry_user
+    - name: upstream_registry_password
+  workspaces:
+    - name: source
+  steps:
+    - name: build-image
+      image: $(params.builder_image)
+      securityContext:
+        privileged: true
+      workingDir: $(workspaces.source.path)
+      script: |
+        dnf install -y podman npm jq git
+
+        podman login registry.redhat.io -u '$(params.upstream_registry_user)' -p '$(params.upstream_registry_password)'
+        ./build-image.sh '$(params.devspaces_version)' '$(params.output_registry)' '$(params.output_image_namespace)' '$(params.output_image_tag)'
+        podman push "$OUTPUT_REGISTRY/$OUTPUT_NAMESPACE/pluginregistry-rhel8:$OUTPUT_TAG"
