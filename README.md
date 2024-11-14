@@ -31,7 +31,7 @@ spec:
       openVSXURL: ''
 ```
 
-Das Image kann auch mittels Tekton Pipeline gebaut und gepusht werden:
+Das Image kann auch mittels Tekton Task in `tekton.yaml` gebaut und gepusht werden:
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
