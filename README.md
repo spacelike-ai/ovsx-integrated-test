@@ -35,11 +35,11 @@ Das Image kann auch mittels Tekton Pipeline gebaut und gepusht werden:
 
 ```yaml
 apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
+kind: TaskRun
 metadata:
   name: ovsx-build
 spec:
-  pipelineRef:
+  taskRef:
     name: ovsx-build
   params:
     - name: source_repo
@@ -56,13 +56,4 @@ spec:
       value:
     - name: upstream_registry_password
       value:
-  workspaces:
-    - name: source
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Mi
 ```
