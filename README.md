@@ -43,7 +43,7 @@ spec:
     name: ovsx-build
   params:
     - name: source_repo
-      value:
+      value: ... Das Repository von diesem README.
     - name: devspaces_version
       value: 3.12
     - name: output_registry
@@ -53,7 +53,9 @@ spec:
     - name: output_image_tag
       value:
     - name: upstream_registry_user
-      value:
+      value: ... Benutzer für den Lesezugriff auf die RedHat Registry.
     - name: upstream_registry_password
       value:
 ```
+
+Das erzeuge image wird auf `<output_registry>/<output_image_namespace>/pluginregistry-rhel8:output_image_tag` gepusht.
