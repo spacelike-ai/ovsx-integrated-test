@@ -1,7 +1,7 @@
 [
   {
-    "id": "tamasfe.even-better-toml",
-    "version": "0.21.0",
-    "download": "https://open-vsx.org/api/tamasfe/even-better-toml/0.21.0/file/tamasfe.even-better-toml-0.21.0.vsix"
+    "id": "SAS.sas-lsp",
+    "version": "1.11.0",
+    "download": "https://open-vsx.org/api/SAS/sas-lsp/1.11.0/file/SAS.sas-lsp-1.11.0.vsix"
   }
 ]
